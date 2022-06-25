@@ -16,6 +16,20 @@ check_stat() {
   fi
 }
 
+SYSTEM(){
+  PRINT "update systemd configuration"
+  sed -i -e 's/REDIS_ENDPOINT/redis.roboshop.local/' -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' -e 's/MONGO_ENDPOINT/mongodb.roboshop.local/' -e 's/MONGO_DNSNAME/mongodb.roboshop.internal/g' -e 's/CARTENDPOINT/cart.roboshop.internal/' -e 's/DBHOST/mysql.roboshop.internal/' -e 's/CARTHOST/cart.roboshop.internal/' -e 's/USERHOST/user.roboshop.internal/' -e 's/AMQPHOST/rabbitmq.roboshop.internal/' /home/roboshop/${component}/systemd.service
+  check_stat $?
+
+  PRINT "setup systemd configuration"
+  mv /home/roboshop/${component}/systemd.service /etc/systemd/system/${component}.service && systemctl daemon-reload
+  check_stat $?
+
+  PRINT "Start ${component} service"
+  systemctl enable ${component} && systemctl start ${component}
+  check_stat $?
+  }
+
 app_setup(){
   check_root
   yum install nginx -y
