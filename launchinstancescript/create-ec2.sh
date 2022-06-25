@@ -2,7 +2,7 @@
 
 ##### Change these values ###
 ZONE_ID="Z022326838K70U1OL57BB"
-SG_NAME="allow all traffic"
+SG_NAME="allow-all-traffic"
 #############################
 
 
